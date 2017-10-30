@@ -81,7 +81,15 @@ func dataSourceAwsVpcRead(d *schema.ResourceData, meta interface{}) error {
 
 	req := &ec2.DescribeVpcsInput{}
 
-	if id := d.Id(); id != "" {
+	// set id from state, if we have it
+	id := d.Id()
+	if cid, ok := d.GetOk("id"); ok {
+		// if the configuration has an ID set, use that. Either it's the same from
+		// state, or the desired VPC has changed and we should look for this new one
+		id = cid.(string)
+	}
+
+	if id != "" {
 		req.VpcIds = []*string{aws.String(id)}
 	}
 

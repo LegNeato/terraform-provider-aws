@@ -31,8 +31,11 @@ func testSweepVPCs(region string) error {
 	req := &ec2.DescribeVpcsInput{
 		Filters: []*ec2.Filter{
 			{
-				Name:   aws.String("tag-value"),
-				Values: []*string{aws.String("tf-acc-revoke*")},
+				Name: aws.String("tag-value"),
+				Values: []*string{
+					aws.String("tf-acc-revoke*"),
+					aws.String("terraform-testacc-vpc-data-source-*"),
+				},
 			},
 		},
 	}
